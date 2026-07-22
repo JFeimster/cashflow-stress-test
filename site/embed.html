@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Cash Flow Stress-Test Copilot — Quick Stress Test</title>
+  <link rel="stylesheet" href="embed.css">
+  <script src="embed.js" defer></script>
+</head>
+<body>
+<main class="embed-shell" id="app">
+  <header class="embed-head">
+    <div>
+      <p class="eyebrow">LOCAL CALCULATION • NO BACKEND</p>
+      <h1>Cash Flow Stress-Test Copilot <span>— Quick Stress Test</span></h1>
+      <p>The quick tool performs core scenario calculations locally in your browser. The full Custom GPT adds guided analysis, file review, deeper modeling, document preparation, and narrative outputs.</p>
+    </div>
+    <div class="status-chip" id="statusChip" data-zone="green"><strong>GREEN</strong><span>Ready to model</span></div>
+  </header>
+
+  <nav class="stepper" aria-label="Stress-test steps">
+    <button class="step is-active" data-step="1">1 <span>Baseline</span></button>
+    <button class="step" data-step="2">2 <span>Shock</span></button>
+    <button class="step" data-step="3">3 <span>Results</span></button>
+    <button class="step" data-step="4">4 <span>Response</span></button>
+    <button class="step" data-step="5">5 <span>Export</span></button>
+  </nav>
+
+  <section class="panel is-active" data-panel="1">
+    <div class="panel-title"><div><p class="micro">STEP 01</p><h2>Build the baseline</h2></div><label class="switch"><input id="detailedToggle" type="checkbox"><span>Detailed 13-week editor</span></label></div>
+    <div id="quickBaseline" class="form-grid">
+      <label>Business type<select id="businessType"><option>Contractor / trades</option><option>Restaurant / hospitality</option><option>Clinic / appointments</option><option>Retail</option><option>Repair shop</option><option>Professional services</option><option>Other</option></select></label>
+      <label>Current available cash<input id="currentCash" type="number" min="0" step="100" value="42000"></label>
+      <label>Protected minimum cash<input id="protectedMin" type="number" min="0" step="100" value="18000"></label>
+      <label>Green safety buffer<input id="safetyBuffer" type="number" min="0" step="100" value="5000"></label>
+      <label>Typical weekly inflows<input id="weeklyInflows" type="number" min="0" step="100" value="28000"></label>
+      <label>Typical weekly outflows <span class="hint">(excluding payroll)</span><input id="weeklyOutflows" type="number" min="0" step="100" value="17350"></label>
+      <label>Payroll amount<input id="payrollAmount" type="number" min="0" step="100" value="14500"></label>
+      <label>Payroll frequency<select id="payrollFrequency"><option value="2">Every 2 weeks</option><option value="1">Weekly</option><option value="4">Every 4 weeks</option></select></label>
+      <label>Starting payroll week<input id="payrollStart" type="number" min="1" max="13" value="2"></label>
+      <label>Available reserve cash<input id="reserveCash" type="number" min="0" step="100" value="12000"></label>
+      <label>Available credit <span class="hint">(not cash until drawn)</span><input id="availableCredit" type="number" min="0" step="100" value="25000"></label>
+    </div>
+    <div id="detailedBaseline" class="details-wrap" hidden>
+      <p class="notice">Edit weekly inflows and outflows. Beginning and ending cash are calculated and chained automatically.</p>
+      <div class="table-scroll"><table class="weekly-editor"><thead><tr><th>Line item</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th><th>W6</th><th>W7</th><th>W8</th><th>W9</th><th>W10</th><th>W11</th><th>W12</th><th>W13</th></tr></thead><tbody id="weeklyEditorBody"></tbody></table></div>
+    </div>
+    <div class="actions"><button class="btn btn-primary" data-next="2">Choose a shock →</button></div>
+  </section>
+
+  <section class="panel" data-panel="2">
+    <div class="panel-title"><div><p class="micro">STEP 02</p><h2>Apply the shock</h2></div><button class="btn btn-small" id="addShock">+ Stack another</button></div>
+    <div class="shock-tabs" role="tablist">
+      <button class="shock-tab is-active" data-shock="slow">Slow week</button>
+      <button class="shock-tab" data-shock="equipment">Broken equipment</button>
+      <button class="shock-tab" data-shock="weather">Weather closure</button>
+      <button class="shock-tab" data-shock="receivable">Delayed receivable</button>
+    </div>
+    <div id="shockForms">
+      <fieldset class="shock-form is-active" data-shock-form="slow">
+        <legend>Slow week</legend>
+        <div class="form-grid">
+          <label>Start week<input id="slowStart" type="number" min="1" max="13" value="3"></label>
+          <label>Number of weeks<input id="slowDuration" type="number" min="1" max="13" value="2"></label>
+          <label>Revenue decline<input id="slowDecline" type="number" min="0" max="100" value="20"></label>
+          <label>Decline unit<select id="slowDeclineUnit"><option value="percent">Percent</option><option value="fixed">Fixed amount</option></select></label>
+          <label>Classification<select id="slowClass"><option value="lost">Lost</option><option value="delayed">Delayed</option><option value="mixed">Mixed</option></select></label>
+          <label>Recovery week<input id="slowRecoveryWeek" type="number" min="1" max="13" value="6"></label>
+          <label>Recovery cost<input id="slowRecoveryCost" type="number" min="0" value="1500"></label>
+        </div>
+      </fieldset>
+      <fieldset class="shock-form" data-shock-form="equipment">
+        <legend>Broken equipment</legend>
+        <div class="form-grid">
+          <label>Failure week<input id="equipWeek" type="number" min="1" max="13" value="4"></label>
+          <label>Repair cost<input id="repairCost" type="number" min="0" value="12500"></label>
+          <label>Repair payment week<input id="repairPayWeek" type="number" min="1" max="13" value="4"></label>
+          <label>Downtime weeks<input id="downtimeWeeks" type="number" min="1" max="13" value="1"></label>
+          <label>Revenue at risk / week<input id="equipRevenueRisk" type="number" min="0" value="4800"></label>
+          <label>Protected capacity %<input id="protectedCapacity" type="number" min="0" max="100" value="0"></label>
+          <label>Rental / outsourcing cost<input id="rentalCost" type="number" min="0" value="2400"></label>
+          <label>Rental payment week<input id="rentalWeek" type="number" min="1" max="13" value="5"></label>
+          <label>Delayed work recovered<input id="delayedWork" type="number" min="0" value="0"></label>
+          <label>Recovery week<input id="equipRecoveryWeek" type="number" min="1" max="13" value="6"></label>
+          <label>Overtime / recovery cost<input id="overtimeCost" type="number" min="0" value="1600"></label>
+          <label>Insurance proceeds<input id="equipInsurance" type="number" min="0" value="0"></label>
+          <label>Insurance receipt week<input id="equipInsuranceWeek" type="number" min="1" max="13" value="10"></label>
+        </div>
+      </fieldset>
+      <fieldset class="shock-form" data-shock-form="weather">
+        <legend>Weather closure</legend>
+        <div class="form-grid">
+          <label>Closure week<input id="weatherWeek" type="number" min="1" max="13" value="5"></label>
+          <label>Closed days<input id="closedDays" type="number" min="1" max="7" value="3"></label>
+          <label>Normal revenue / open day<input id="revenuePerDay" type="number" min="0" value="4500"></label>
+          <label>Protected capacity %<input id="weatherProtected" type="number" min="0" max="100" value="10"></label>
+          <label>Delayed revenue<input id="weatherDelayed" type="number" min="0" value="2500"></label>
+          <label>Revised collection week<input id="weatherDelayedWeek" type="number" min="1" max="13" value="7"></label>
+          <label>Spoilage<input id="spoilage" type="number" min="0" value="3200"></label>
+          <label>Cleanup / temporary cost<input id="cleanup" type="number" min="0" value="1800"></label>
+          <label>Reopening cost<input id="reopenCost" type="number" min="0" value="1200"></label>
+          <label>Reopening cost week<input id="reopenWeek" type="number" min="1" max="13" value="6"></label>
+          <label>Insurance proceeds<input id="weatherInsurance" type="number" min="0" value="0"></label>
+          <label>Insurance receipt week<input id="weatherInsuranceWeek" type="number" min="1" max="13" value="11"></label>
+        </div>
+        <p class="notice">Payroll already included in the baseline is not added again.</p>
+      </fieldset>
+      <fieldset class="shock-form" data-shock-form="receivable">
+        <legend>Delayed receivable</legend>
+        <div class="form-grid">
+          <label>Amount<input id="arAmount" type="number" min="0" value="18000"></label>
+          <label>Original collection week<input id="arOriginalWeek" type="number" min="1" max="13" value="4"></label>
+          <label>Revised collection week<input id="arRevisedWeek" type="number" min="1" max="13" value="7"></label>
+        </div>
+        <p class="notice">The amount is removed from the original week before it is added to the revised week.</p>
+      </fieldset>
+    </div>
+    <div class="active-shocks"><h3>Active shocks</h3><div id="shockList"><p class="muted">Current shock will be included. Use “Stack another” to preserve it and add another.</p></div></div>
+    <div class="actions split"><button class="btn" data-prev="1">← Baseline</button><button class="btn btn-primary" id="runModel">Run stress test →</button></div>
+  </section>
+
+  <section class="panel" data-panel="3">
+    <div class="panel-title"><div><p class="micro">STEP 03</p><h2>Seven numbers that matter</h2></div><div id="resultStatus" class="big-zone">GREEN</div></div>
+    <div class="score-grid" id="scoreGrid"></div>
+    <div class="decision-strip"><div><span>RECOVERY WEEK</span><strong id="recoveryOutput">—</strong></div><div><span>PRIMARY DRIVER</span><strong id="driverOutput">—</strong></div><div><span>BEST RESPONSE LEVER</span><strong id="leverOutput">—</strong></div></div>
+    <div class="chart-wrap"><svg id="cashChart" role="img" aria-labelledby="chartTitle chartDesc" viewBox="0 0 900 320"><title id="chartTitle">13-week cash balance chart</title><desc id="chartDesc">Baseline and stressed ending cash compared with the protected minimum.</desc></svg></div>
+    <div class="table-scroll"><table><caption>Accessible weekly cash results</caption><thead><tr><th>Week</th><th>Beginning cash</th><th>Baseline ending cash</th><th>Stress ending cash</th><th>Status</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
+    <p id="srSummary" class="sr-only" aria-live="polite"></p>
+    <div class="actions split"><button class="btn" data-prev="2">← Shock</button><button class="btn btn-primary" data-next="4">Test response levers →</button></div>
+  </section>
+
+  <section class="panel" data-panel="4">
+    <div class="panel-title"><div><p class="micro">STEP 04</p><h2>Handle the response</h2></div><p class="micro">Borrowing is not automatically first or best.</p></div>
+    <div class="lever-grid">
+      <label>Accelerated receivables<input id="leverAR" type="number" min="0" value="0"><select id="leverARWeek"><option value="1">W1</option><option value="2">W2</option><option value="3">W3</option><option value="4">W4</option><option value="5">W5</option><option value="6">W6</option><option value="7">W7</option><option value="8">W8</option><option value="9">W9</option><option value="10">W10</option><option value="11">W11</option><option value="12">W12</option><option value="13">W13</option></select></label>
+      <label>New deposits<input id="leverDeposits" type="number" min="0" value="0"></label>
+      <label>Expense freeze<input id="leverFreeze" type="number" min="0" value="0"></label>
+      <label>Reduced owner distributions<input id="leverOwner" type="number" min="0" value="0"></label>
+      <label>Supplier payment timing<input id="leverSupplier" type="number" min="0" value="0"></label>
+      <label>Delayed purchase<input id="leverPurchase" type="number" min="0" value="0"></label>
+      <label>Reserve transfer<input id="leverReserve" type="number" min="0" value="0"></label>
+      <label>Working-capital draw<input id="leverCredit" type="number" min="0" value="0"><span class="hint">Cannot exceed available credit.</span></label>
+    </div>
+    <button class="btn btn-primary" id="applyLevers">Recalculate response plan</button>
+    <div class="response-summary" id="responseSummary"><p>Enter one or more actions to compare the revised low point, funding gap, timing improvement, and tradeoffs.</p></div>
+    <div class="actions split"><button class="btn" data-prev="3">← Results</button><button class="btn btn-primary" data-next="5">Export →</button></div>
+  </section>
+
+  <section class="panel" data-panel="5">
+    <div class="panel-title"><div><p class="micro">STEP 05</p><h2>Export the decision record</h2></div></div>
+    <div class="export-grid">
+      <button class="export-card" id="downloadReport"><strong>Download Report</strong><span>Markdown planning report</span></button>
+      <button class="export-card" id="downloadCsv"><strong>Download CSV</strong><span>13-week weekly results</span></button>
+      <button class="export-card" id="downloadJson"><strong>Download JSON</strong><span>Structured output</span></button>
+      <button class="export-card" id="copySummary"><strong>Copy Summary</strong><span>Plain-language decision brief</span></button>
+      <button class="export-card" id="printReport"><strong>Print</strong><span>Print-friendly report</span></button>
+      <button class="export-card danger" id="clearData"><strong>Clear All Data</strong><span>Reset this browser session</span></button>
+    </div>
+    <div class="local-save"><label><input id="saveDraft" type="checkbox"> Save this draft on this device</label><button class="btn btn-small" id="deleteDraft">Delete Local Draft</button></div>
+    <div class="full-copilot-callout"><h3>Need uploaded-file review or a lender/advisor summary?</h3><p>Open the full Copilot for guided analysis, document preparation, deeper scenarios, and narrative outputs.</p><a class="btn btn-primary" id="openCopilot" target="_blank" rel="noopener">Open Full Copilot</a><span id="copilotSoon" hidden>Full Copilot link coming soon.</span></div>
+    <div class="actions"><button class="btn" data-prev="4">← Response plan</button></div>
+  </section>
+
+  <footer class="embed-foot">
+    <p><strong>Planning boundary:</strong> This stress test is a planning tool based on user-provided information and stated assumptions. It does not guarantee funding, eligibility, rates, terms, insurance reimbursement, approval, or financial performance and does not replace professional accounting, tax, legal, lending, insurance, or underwriting judgment.</p>
+    <p>Moonshine Capital is not a bank.</p>
+  </footer>
+</main>
+</body>
+</html>

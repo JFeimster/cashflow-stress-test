@@ -1,0 +1,486 @@
+{
+  "fictionalDataNotice": "All businesses, values, customers, dates, and events in this file are fictional and are provided only for testing, demonstration, and QA.",
+  "scenarios": {
+    "contractor": {
+      "id": "contractor_001",
+      "name": "Slow demand plus service-truck failure",
+      "fictional": true,
+      "business": {
+        "business_name": "Blue Ridge HVAC Services",
+        "business_type": "HVAC contractor",
+        "location": "Fictional Mid-Atlantic market",
+        "current_available_cash": 42000,
+        "protected_minimum_cash": 18000,
+        "green_safety_buffer": 5000,
+        "available_reserve_cash": 12000,
+        "available_credit": 25000,
+        "payroll_schedule": [
+          {
+            "week": 2,
+            "amount": 14500
+          },
+          {
+            "week": 4,
+            "amount": 14500
+          },
+          {
+            "week": 6,
+            "amount": 14500
+          },
+          {
+            "week": 8,
+            "amount": 14500
+          },
+          {
+            "week": 10,
+            "amount": 14500
+          },
+          {
+            "week": 12,
+            "amount": 14500
+          }
+        ]
+      },
+      "baseline": {
+        "normal_weekly_cash_inflows": 28000,
+        "normal_weekly_cash_outflows": 24600,
+        "lowest_projected_cash": 42000,
+        "first_week_below_protected_minimum": null,
+        "first_negative_cash_week": null
+      },
+      "adjustments": [
+        {
+          "week": 3,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 5600,
+          "note": "20% revenue decline"
+        },
+        {
+          "week": 4,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 5600,
+          "note": "20% revenue decline"
+        },
+        {
+          "week": 4,
+          "line_item": "repairs_replacement",
+          "adjustment_type": "add_outflow",
+          "amount": 12500,
+          "note": "Truck repair and towing"
+        },
+        {
+          "week": 4,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 4800,
+          "note": "Five days of lost field capacity"
+        },
+        {
+          "week": 5,
+          "line_item": "temporary_operating_cost",
+          "adjustment_type": "add_outflow",
+          "amount": 2400,
+          "note": "Temporary vehicle rental"
+        }
+      ],
+      "responseLevers": [
+        {
+          "name": "Collect overdue receivables",
+          "amount": 9000,
+          "week": 4
+        },
+        {
+          "name": "Transfer reserve cash",
+          "amount": 8000,
+          "week": 4
+        },
+        {
+          "name": "Negotiate repair payment",
+          "amount_delayed": 5000,
+          "from_week": 4,
+          "to_week": 6
+        }
+      ]
+    },
+    "restaurant": {
+      "id": "restaurant_001",
+      "name": "Three-day storm closure with spoilage",
+      "fictional": true,
+      "business": {
+        "business_name": "Maple Street Kitchen",
+        "business_type": "Restaurant",
+        "location": "Fictional Northeast market",
+        "current_available_cash": 36000,
+        "protected_minimum_cash": 22000,
+        "green_safety_buffer": 6000,
+        "available_reserve_cash": 8000,
+        "available_credit": 15000,
+        "payroll_schedule": [
+          {
+            "week": 1,
+            "amount": 12800
+          },
+          {
+            "week": 3,
+            "amount": 12800
+          },
+          {
+            "week": 5,
+            "amount": 12800
+          },
+          {
+            "week": 7,
+            "amount": 12800
+          },
+          {
+            "week": 9,
+            "amount": 12800
+          },
+          {
+            "week": 11,
+            "amount": 12800
+          },
+          {
+            "week": 13,
+            "amount": 12800
+          }
+        ]
+      },
+      "baseline": {
+        "normal_weekly_cash_inflows": 31000,
+        "normal_weekly_cash_outflows": 29400,
+        "lowest_projected_cash": 36000,
+        "first_week_below_protected_minimum": null,
+        "first_negative_cash_week": null
+      },
+      "adjustments": [
+        {
+          "week": 2,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 14500,
+          "note": "Three closed service days"
+        },
+        {
+          "week": 2,
+          "line_item": "spoilage_inventory_loss",
+          "adjustment_type": "add_outflow",
+          "amount": 4200,
+          "note": "Perishable inventory loss"
+        },
+        {
+          "week": 2,
+          "line_item": "cleanup",
+          "adjustment_type": "add_outflow",
+          "amount": 1800
+        },
+        {
+          "week": 3,
+          "line_item": "reopening_marketing",
+          "adjustment_type": "add_outflow",
+          "amount": 1500
+        },
+        {
+          "week": 6,
+          "line_item": "insurance_proceeds",
+          "adjustment_type": "add_inflow",
+          "amount": 5000,
+          "note": "Illustrative partial reimbursement received in Week 6"
+        }
+      ],
+      "responseLevers": [
+        {
+          "name": "Reduce owner distribution",
+          "amount": 3000,
+          "week": 2
+        },
+        {
+          "name": "Use reserve cash",
+          "amount": 6000,
+          "week": 2
+        },
+        {
+          "name": "Negotiate supplier payment",
+          "amount_delayed": 4000,
+          "from_week": 2,
+          "to_week": 4
+        }
+      ]
+    },
+    "clinic": {
+      "id": "clinic_001",
+      "name": "Insurance receivable delayed three weeks",
+      "fictional": true,
+      "business": {
+        "business_name": "Harbor Point Physical Therapy",
+        "business_type": "Outpatient clinic",
+        "location": "Fictional Southeast market",
+        "current_available_cash": 55000,
+        "protected_minimum_cash": 30000,
+        "green_safety_buffer": 8000,
+        "available_reserve_cash": 15000,
+        "available_credit": 20000,
+        "payroll_schedule": [
+          {
+            "week": 2,
+            "amount": 21000
+          },
+          {
+            "week": 4,
+            "amount": 21000
+          },
+          {
+            "week": 6,
+            "amount": 21000
+          },
+          {
+            "week": 8,
+            "amount": 21000
+          },
+          {
+            "week": 10,
+            "amount": 21000
+          },
+          {
+            "week": 12,
+            "amount": 21000
+          }
+        ]
+      },
+      "baseline": {
+        "normal_weekly_cash_inflows": 39000,
+        "normal_weekly_cash_outflows": 36500,
+        "lowest_projected_cash": 55000,
+        "first_week_below_protected_minimum": null,
+        "first_negative_cash_week": null
+      },
+      "adjustments": [
+        {
+          "week": 5,
+          "line_item": "accounts_receivable_collected",
+          "adjustment_type": "remove_inflow",
+          "amount": 24000,
+          "note": "Expected payer remittance removed from original week"
+        },
+        {
+          "week": 8,
+          "line_item": "accounts_receivable_collected",
+          "adjustment_type": "add_inflow",
+          "amount": 24000,
+          "note": "Same receivable moved to revised collection week"
+        }
+      ],
+      "responseLevers": [
+        {
+          "name": "Accelerate patient balances",
+          "amount": 7000,
+          "week": 6
+        },
+        {
+          "name": "Delay equipment purchase",
+          "amount_delayed": 6000,
+          "from_week": 6,
+          "to_week": 10
+        },
+        {
+          "name": "Use reserve cash",
+          "amount": 10000,
+          "week": 6
+        }
+      ]
+    },
+    "retailer": {
+      "id": "retailer_001",
+      "name": "Slow month plus inventory commitment",
+      "fictional": true,
+      "business": {
+        "business_name": "Juniper Home Market",
+        "business_type": "Local retail store",
+        "location": "Fictional Midwest market",
+        "current_available_cash": 28000,
+        "protected_minimum_cash": 16000,
+        "green_safety_buffer": 4000,
+        "available_reserve_cash": 5000,
+        "available_credit": 12000,
+        "payroll_schedule": [
+          {
+            "week": 2,
+            "amount": 8500
+          },
+          {
+            "week": 4,
+            "amount": 8500
+          },
+          {
+            "week": 6,
+            "amount": 8500
+          },
+          {
+            "week": 8,
+            "amount": 8500
+          },
+          {
+            "week": 10,
+            "amount": 8500
+          },
+          {
+            "week": 12,
+            "amount": 8500
+          }
+        ]
+      },
+      "baseline": {
+        "normal_weekly_cash_inflows": 22000,
+        "normal_weekly_cash_outflows": 20800,
+        "lowest_projected_cash": 28000,
+        "first_week_below_protected_minimum": null,
+        "first_negative_cash_week": null
+      },
+      "adjustments": [
+        {
+          "week": 3,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 5500
+        },
+        {
+          "week": 4,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 5500
+        },
+        {
+          "week": 5,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 3300
+        },
+        {
+          "week": 4,
+          "line_item": "suppliers_inventory",
+          "adjustment_type": "add_outflow",
+          "amount": 9000,
+          "note": "Existing seasonal inventory commitment"
+        }
+      ],
+      "responseLevers": [
+        {
+          "name": "Require deposits for special orders",
+          "amount": 4500,
+          "week": 4
+        },
+        {
+          "name": "Reduce owner distribution",
+          "amount": 2500,
+          "week": 4
+        },
+        {
+          "name": "Draw working capital",
+          "amount": 10000,
+          "week": 4
+        }
+      ]
+    },
+    "repair": {
+      "id": "repair_shop_001",
+      "name": "Lift failure with temporary outsourcing",
+      "fictional": true,
+      "business": {
+        "business_name": "Northline Auto & Fleet Repair",
+        "business_type": "Automotive repair shop",
+        "location": "Fictional Southwest market",
+        "current_available_cash": 47000,
+        "protected_minimum_cash": 24000,
+        "green_safety_buffer": 6000,
+        "available_reserve_cash": 10000,
+        "available_credit": 18000,
+        "payroll_schedule": [
+          {
+            "week": 1,
+            "amount": 13200
+          },
+          {
+            "week": 3,
+            "amount": 13200
+          },
+          {
+            "week": 5,
+            "amount": 13200
+          },
+          {
+            "week": 7,
+            "amount": 13200
+          },
+          {
+            "week": 9,
+            "amount": 13200
+          },
+          {
+            "week": 11,
+            "amount": 13200
+          },
+          {
+            "week": 13,
+            "amount": 13200
+          }
+        ]
+      },
+      "baseline": {
+        "normal_weekly_cash_inflows": 34000,
+        "normal_weekly_cash_outflows": 31500,
+        "lowest_projected_cash": 47000,
+        "first_week_below_protected_minimum": null,
+        "first_negative_cash_week": null
+      },
+      "adjustments": [
+        {
+          "week": 5,
+          "line_item": "repairs_replacement",
+          "adjustment_type": "add_outflow",
+          "amount": 18500,
+          "note": "Commercial lift repair"
+        },
+        {
+          "week": 5,
+          "line_item": "cash_sales",
+          "adjustment_type": "remove_inflow",
+          "amount": 7500,
+          "note": "Lost capacity during failure"
+        },
+        {
+          "week": 5,
+          "line_item": "outsourcing",
+          "adjustment_type": "add_outflow",
+          "amount": 3200
+        },
+        {
+          "week": 6,
+          "line_item": "overtime",
+          "adjustment_type": "add_outflow",
+          "amount": 2200,
+          "note": "Catch-up labor"
+        }
+      ],
+      "responseLevers": [
+        {
+          "name": "Negotiate repair deposit",
+          "amount_delayed": 7500,
+          "from_week": 5,
+          "to_week": 7
+        },
+        {
+          "name": "Collect fleet receivables",
+          "amount": 11000,
+          "week": 5
+        },
+        {
+          "name": "Transfer reserve cash",
+          "amount": 8000,
+          "week": 5
+        }
+      ]
+    }
+  }
+}
