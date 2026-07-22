@@ -1,0 +1,690 @@
+{
+  "schema_name": "cash_flow_stress_test_scenario_inputs_and_formulas",
+  "schema_version": "1.0.0",
+  "product": "Cash Flow Stress-Test Copilot",
+  "forecast_horizon_weeks": 13,
+  "currency_default": "USD",
+  "sign_convention": {
+    "cash_inflows": "positive_numbers",
+    "cash_outflows": "positive_numbers_subtracted_by_formula",
+    "negative_expense_entries_allowed": false
+  },
+  "units": {
+    "currency": "ISO_4217_currency_amount",
+    "percentage": "decimal_from_0_to_1",
+    "week_number": "integer_1_to_13",
+    "days": "nonnegative_integer",
+    "payroll_cycles": "nonnegative_number"
+  },
+  "baseline_fields": {
+    "business_type": {
+      "type": "string",
+      "required": true,
+      "unit": null
+    },
+    "forecast_start_date": {
+      "type": "string",
+      "format": "date",
+      "required": false,
+      "unit": null
+    },
+    "current_available_cash": {
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "unit": "currency"
+    },
+    "protected_minimum_cash": {
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "unit": "currency"
+    },
+    "green_safety_buffer": {
+      "type": "number",
+      "required": false,
+      "default": 0,
+      "minimum": 0,
+      "unit": "currency"
+    },
+    "available_reserve_cash": {
+      "type": "number",
+      "required": false,
+      "default": 0,
+      "minimum": 0,
+      "unit": "currency"
+    },
+    "available_credit": {
+      "type": "number",
+      "required": false,
+      "default": 0,
+      "minimum": 0,
+      "unit": "currency",
+      "calculation_note": "not_counted_as_cash_until_a_draw_is_modeled"
+    },
+    "weekly_cash_sales": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_ar_collected": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_other_operating_inflows": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_reserve_transfers": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_credit_draws": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_insurance_proceeds": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_payroll": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_rent_occupancy": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_suppliers_inventory": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_debt_equipment_payments": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_taxes": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_insurance_expense": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_utilities": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_software_subscriptions": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_marketing_advertising": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_owner_distributions": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_repairs_replacement": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_refunds_credits": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "weekly_other_cash_outflows": {
+      "type": "array",
+      "items": "number",
+      "length": 13,
+      "minimum_item": 0,
+      "unit": "currency"
+    },
+    "payroll_schedule": {
+      "type": "array",
+      "items": {
+        "week": "integer_1_to_13",
+        "amount": "number_nonnegative",
+        "due_date": "optional_date"
+      },
+      "required": false
+    }
+  },
+  "scenario_types": {
+    "slow_week": {
+      "required_inputs": [
+        "start_week",
+        "duration_weeks",
+        "revenue_decline_pct"
+      ],
+      "optional_inputs": [
+        "affected_revenue_lines",
+        "delayed_receivable_amount",
+        "revised_collection_week",
+        "recovery_cost",
+        "recovery_cost_week"
+      ],
+      "fields": {
+        "start_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "duration_weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "weeks"
+        },
+        "revenue_decline_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "unit": "percentage"
+        },
+        "delayed_receivable_amount": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "original_collection_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "revised_collection_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "recovery_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "recovery_cost_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        }
+      }
+    },
+    "equipment_failure": {
+      "required_inputs": [
+        "start_week",
+        "selected_path",
+        "downtime_days"
+      ],
+      "optional_inputs": [
+        "repair_cost",
+        "replacement_cost",
+        "rental_cost",
+        "outsourcing_cost",
+        "vendor_deposit",
+        "revenue_lost_per_day",
+        "overtime_catchup_cost",
+        "insurance_deductible",
+        "insurance_proceeds",
+        "insurance_receipt_week"
+      ],
+      "fields": {
+        "start_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "selected_path": {
+          "type": "string",
+          "enum": [
+            "repair",
+            "replace",
+            "rent",
+            "outsource",
+            "delay_work",
+            "approved_combination"
+          ]
+        },
+        "downtime_days": {
+          "type": "integer",
+          "minimum": 0,
+          "unit": "days"
+        },
+        "repair_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "replacement_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "rental_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "outsourcing_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "vendor_deposit": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "revenue_lost_per_day": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency_per_day"
+        },
+        "overtime_catchup_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_deductible": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_proceeds": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_receipt_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        }
+      }
+    },
+    "weather_closure": {
+      "required_inputs": [
+        "start_week",
+        "closed_or_reduced_days"
+      ],
+      "optional_inputs": [
+        "revenue_lost_per_day",
+        "payroll_still_owed",
+        "cleanup_cost",
+        "spoilage_inventory_loss",
+        "refunds_customer_credits",
+        "temporary_equipment_cost",
+        "reopening_cost",
+        "insurance_deductible",
+        "insurance_proceeds",
+        "insurance_receipt_week"
+      ],
+      "fields": {
+        "start_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "closed_or_reduced_days": {
+          "type": "integer",
+          "minimum": 0,
+          "unit": "days"
+        },
+        "revenue_lost_per_day": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency_per_day"
+        },
+        "payroll_still_owed": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency",
+          "calculation_note": "include_only_incremental_or_confirmed_amount_not_already_in_baseline"
+        },
+        "cleanup_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "spoilage_inventory_loss": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "refunds_customer_credits": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "temporary_equipment_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "reopening_cost": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_deductible": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_proceeds": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "insurance_receipt_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        }
+      }
+    },
+    "delayed_receivable": {
+      "required_inputs": [
+        "receivable_amount",
+        "original_collection_week",
+        "revised_collection_week"
+      ],
+      "optional_inputs": [
+        "customer_name_redacted",
+        "collection_confidence",
+        "write_off_assumption"
+      ],
+      "fields": {
+        "receivable_amount": {
+          "type": "number",
+          "minimum": 0,
+          "unit": "currency"
+        },
+        "original_collection_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "revised_collection_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 13,
+          "unit": "week_number"
+        },
+        "collection_confidence": {
+          "type": "string",
+          "enum": [
+            "confirmed",
+            "estimated",
+            "uncertain"
+          ]
+        },
+        "write_off_assumption": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "stacked_shock": {
+      "required_inputs": [
+        "included_scenario_ids"
+      ],
+      "fields": {
+        "included_scenario_ids": {
+          "type": "array",
+          "items": "string",
+          "minimum_length": 2
+        },
+        "overlap_review_completed": {
+          "type": "boolean",
+          "required": true
+        },
+        "overlap_notes": {
+          "type": "array",
+          "items": "string",
+          "required": true
+        }
+      }
+    },
+    "custom_shock": {
+      "required_inputs": [
+        "name",
+        "revenue_effects_by_week",
+        "cost_effects_by_week",
+        "assumptions_confirmed"
+      ],
+      "fields": {
+        "name": {
+          "type": "string"
+        },
+        "revenue_effects_by_week": {
+          "type": "array",
+          "items": {
+            "week": "integer_1_to_13",
+            "amount_reduction": "number_nonnegative"
+          }
+        },
+        "cost_effects_by_week": {
+          "type": "array",
+          "items": {
+            "week": "integer_1_to_13",
+            "amount_increase": "number_nonnegative"
+          }
+        },
+        "duration_days": {
+          "type": "integer",
+          "minimum": 0,
+          "unit": "days"
+        },
+        "recovery_assumption": {
+          "type": "string"
+        },
+        "assumptions_confirmed": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "formulas": {
+    "total_cash_inflows_week_n": "sum(all_inflow_lines_week_n)",
+    "total_cash_outflows_week_n": "sum(all_outflow_lines_week_n)",
+    "ending_cash_week_n": "beginning_cash_week_n + total_cash_inflows_week_n - total_cash_outflows_week_n",
+    "beginning_cash_week_1": "current_available_cash",
+    "beginning_cash_week_n_for_n_gt_1": "ending_cash_week_(n-1)",
+    "variance_to_protected_minimum_week_n": "ending_cash_week_n - protected_minimum_cash",
+    "green_threshold": "protected_minimum_cash + green_safety_buffer",
+    "stress_revenue": "baseline_revenue * (1 - revenue_decline_pct)",
+    "weekly_revenue_loss": "baseline_revenue - stress_revenue",
+    "lowest_projected_cash": "min(ending_cash_week_1_through_week_13)",
+    "funding_gap": "max(0, protected_minimum_cash - lowest_projected_cash)",
+    "first_week_below_protected_minimum": "first_week_where(ending_cash < protected_minimum_cash)",
+    "first_negative_cash_week": "first_week_where(ending_cash < 0)",
+    "protected_minimum_runway": "count_full_weeks_before_first_week_where(ending_cash < protected_minimum_cash)",
+    "positive_cash_runway": "count_full_weeks_before_first_week_where(ending_cash < 0)",
+    "recovery_week": "first_week_after_trough_where(ending_cash >= protected_minimum_cash_for_2_consecutive_weeks)",
+    "payroll_coverage": "count_scheduled_payroll_cycles_fully_payable_without_ending_cash_below_0"
+  },
+  "validation_rules": [
+    {
+      "id": "V001",
+      "rule": "all_weekly_arrays_must_have_exactly_13_values"
+    },
+    {
+      "id": "V002",
+      "rule": "week_numbers_must_be_between_1_and_13"
+    },
+    {
+      "id": "V003",
+      "rule": "percentage_values_must_be_between_0_and_1"
+    },
+    {
+      "id": "V004",
+      "rule": "cash_inflows_and_outflows_must_be_nonnegative_under_the_standard_sign_convention"
+    },
+    {
+      "id": "V005",
+      "rule": "beginning_cash_week_n_must_equal_ending_cash_week_(n-1)_for_n_greater_than_1"
+    },
+    {
+      "id": "V006",
+      "rule": "delayed_receivable_must_be_removed_from_original_week_before_added_to_revised_week"
+    },
+    {
+      "id": "V007",
+      "rule": "available_credit_must_not_be_counted_as_cash_until_a_draw_is_modeled"
+    },
+    {
+      "id": "V008",
+      "rule": "reserve_cash_must_not_be_included_in_beginning_cash_and_as_a_later_transfer"
+    },
+    {
+      "id": "V009",
+      "rule": "insurance_proceeds_must_not_be_counted_before_expected_receipt_week"
+    },
+    {
+      "id": "V010",
+      "rule": "repair_replacement_rental_and_outsourcing_costs_must_follow_the_selected_operating_path"
+    },
+    {
+      "id": "V011",
+      "rule": "stacked_shocks_must_be_recalculated_week_by_week_not_created_by_adding_individual_funding_gaps"
+    },
+    {
+      "id": "V012",
+      "rule": "overlapping_revenue_losses_costs_payroll_and_response_levers_must_be_deduplicated"
+    },
+    {
+      "id": "V013",
+      "rule": "assumptions_and_missing_data_must_be_disclosed"
+    },
+    {
+      "id": "V014",
+      "rule": "funding_outputs_must_not_imply_approval_eligibility_or_guaranteed_terms"
+    }
+  ],
+  "output_fields": {
+    "lowest_projected_cash": {
+      "type": "number",
+      "unit": "currency"
+    },
+    "week_of_lowest_cash": {
+      "type": "integer",
+      "unit": "week_number"
+    },
+    "first_week_below_protected_minimum": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "unit": "week_number"
+    },
+    "first_negative_cash_week": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "unit": "week_number"
+    },
+    "protected_minimum_runway_weeks": {
+      "type": "number",
+      "unit": "weeks"
+    },
+    "positive_cash_runway_weeks": {
+      "type": "number",
+      "unit": "weeks"
+    },
+    "payroll_coverage_cycles": {
+      "type": "number",
+      "unit": "payroll_cycles"
+    },
+    "funding_gap": {
+      "type": "number",
+      "unit": "currency"
+    },
+    "recovery_week": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ],
+      "unit": "week_number_or_horizon_message"
+    },
+    "largest_cash_pressure_driver": {
+      "type": "string"
+    },
+    "best_response_lever": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": "string"
+    },
+    "missing_information": {
+      "type": "array",
+      "items": "string"
+    }
+  }
+}

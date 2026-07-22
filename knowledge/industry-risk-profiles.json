@@ -1,0 +1,887 @@
+{
+  "schema_name": "cash_flow_stress_test_industry_risk_profiles",
+  "schema_version": "1.0.0",
+  "product": "Cash Flow Stress-Test Copilot",
+  "purpose": "Illustrative industry-specific risk prompts, scenario variables, document requests, triggers, and response levers for local-business cash-flow stress testing.",
+  "important_notice": "The values and ranges in this file are scenario defaults for demonstrations and missing-data prompts. They are not industry benchmarks, underwriting standards, approval criteria, or predictions. Use user-provided and source-verified values whenever available.",
+  "global_rules": {
+    "forecast_horizon_weeks": 13,
+    "currency_default": "USD",
+    "available_credit_is_cash": false,
+    "insurance_proceeds_before_receipt_week": false,
+    "funding_gap_formula": "max(0, protected_minimum_cash - lowest_projected_cash)",
+    "required_revenue_classes": [
+      "lost",
+      "delayed",
+      "protected",
+      "unknown"
+    ],
+    "required_cost_classes": [
+      "fixed",
+      "variable",
+      "direct_disruption",
+      "temporary_operating",
+      "recovery",
+      "financing",
+      "unknown"
+    ],
+    "confidence_values": [
+      "confirmed",
+      "estimated",
+      "unknown"
+    ]
+  },
+  "profiles": [
+    {
+      "profile_id": "contractors_trades",
+      "label": "Contractors and Trades",
+      "examples": [
+        "HVAC",
+        "plumbing",
+        "electrical",
+        "roofing",
+        "landscaping",
+        "general contracting"
+      ],
+      "primary_cash_timing_risks": [
+        "vehicle or equipment failure",
+        "weather delays",
+        "customer deposit shortfalls",
+        "slow invoice collections",
+        "material deposits",
+        "payroll before customer payment",
+        "project cancellation",
+        "change-order delay"
+      ],
+      "critical_assets": [
+        "service vehicles",
+        "trailers",
+        "specialty tools",
+        "heavy equipment"
+      ],
+      "recommended_scenarios": [
+        "two-week 20% revenue decline",
+        "service vehicle failure",
+        "five weather-delay days",
+        "major receivable delayed three weeks",
+        "material price increase",
+        "stacked truck failure and payroll week"
+      ],
+      "prompt_variables": [
+        {
+          "field": "revenue_per_crew_day",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "crew_days_lost",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "customer_deposit_rate",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "material_deposit_due",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "vehicle_repair_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "rental_capacity_restored",
+          "type": "number",
+          "unit": "percent"
+        }
+      ],
+      "documents": [
+        "job backlog",
+        "AR aging",
+        "payroll schedule",
+        "vehicle or equipment estimate",
+        "material purchase orders",
+        "customer contracts",
+        "insurance declarations"
+      ],
+      "response_levers": [
+        "accelerate deposits",
+        "collect milestone invoices",
+        "rent equipment",
+        "outsource selected jobs",
+        "negotiate material timing",
+        "reduce owner distributions"
+      ]
+    },
+    {
+      "profile_id": "restaurants_hospitality",
+      "label": "Restaurants, Cafés, and Hospitality",
+      "examples": [
+        "restaurant",
+        "café",
+        "bar",
+        "catering",
+        "small hotel",
+        "event venue"
+      ],
+      "primary_cash_timing_risks": [
+        "weather closure",
+        "spoilage",
+        "equipment failure",
+        "foot-traffic decline",
+        "payroll during closure",
+        "supplier commitments",
+        "event cancellations",
+        "utility interruption"
+      ],
+      "critical_assets": [
+        "refrigeration",
+        "cooking equipment",
+        "HVAC",
+        "point-of-sale",
+        "delivery equipment"
+      ],
+      "recommended_scenarios": [
+        "three-day closure",
+        "refrigeration failure",
+        "20% traffic decline for three weeks",
+        "event cancellation",
+        "supplier delivery interruption",
+        "stacked closure and spoilage"
+      ],
+      "prompt_variables": [
+        {
+          "field": "average_sales_per_open_day",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "closure_days",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "delivery_capacity",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "spoilage_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "payroll_during_closure",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "reopening_cost",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "daily sales report",
+        "payroll schedule",
+        "inventory loss record",
+        "equipment estimate",
+        "insurance claim documents",
+        "supplier invoices",
+        "closure record"
+      ],
+      "response_levers": [
+        "protect delivery revenue",
+        "reduce owner distribution",
+        "negotiate supplier timing",
+        "use reserve cash",
+        "rebook events",
+        "model recovery marketing"
+      ]
+    },
+    {
+      "profile_id": "clinics_appointments",
+      "label": "Clinics and Appointment-Based Businesses",
+      "examples": [
+        "physical therapy",
+        "dental",
+        "chiropractic",
+        "med spa",
+        "veterinary",
+        "therapy practice"
+      ],
+      "primary_cash_timing_risks": [
+        "payer delay",
+        "appointment cancellations",
+        "provider absence",
+        "equipment failure",
+        "closure",
+        "payroll concentration",
+        "refunds",
+        "credentialing delay"
+      ],
+      "critical_assets": [
+        "treatment equipment",
+        "scheduling systems",
+        "billing systems",
+        "specialty devices"
+      ],
+      "recommended_scenarios": [
+        "major payer receivable delayed three weeks",
+        "15% appointment cancellation rate",
+        "provider unavailable for five days",
+        "equipment outage",
+        "weather closure",
+        "stacked receivable delay and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "average_cash_collections_per_week",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "payer_receivable_amount",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "collection_delay_weeks",
+          "type": "integer",
+          "unit": "weeks"
+        },
+        {
+          "field": "appointment_cancellation_rate",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "payroll_per_cycle",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "rebooking_rate",
+          "type": "number",
+          "unit": "percent"
+        }
+      ],
+      "documents": [
+        "AR aging",
+        "payer remittance schedule",
+        "appointment report",
+        "payroll register",
+        "bank statements",
+        "equipment estimate"
+      ],
+      "response_levers": [
+        "accelerate patient balances",
+        "rebook appointments",
+        "delay noncritical equipment purchases",
+        "use reserves",
+        "review billing blockers",
+        "prepare advisor summary"
+      ]
+    },
+    {
+      "profile_id": "retail_local",
+      "label": "Local Retail",
+      "examples": [
+        "boutique",
+        "hardware store",
+        "specialty food shop",
+        "home goods",
+        "pet store"
+      ],
+      "primary_cash_timing_risks": [
+        "foot-traffic decline",
+        "inventory commitment",
+        "seasonal markdowns",
+        "theft or damage",
+        "supplier delay",
+        "weather closure",
+        "merchant payout delay",
+        "rent concentration"
+      ],
+      "critical_assets": [
+        "point-of-sale",
+        "refrigeration where applicable",
+        "inventory",
+        "security",
+        "delivery equipment"
+      ],
+      "recommended_scenarios": [
+        "25% sales decline for two weeks",
+        "seasonal inventory due during slow period",
+        "three-day closure",
+        "merchant payout delayed",
+        "inventory damage",
+        "stacked slow sales and supplier payment"
+      ],
+      "prompt_variables": [
+        {
+          "field": "average_weekly_cash_sales",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "sales_decline_rate",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "inventory_commitment_due",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "merchant_payout_delay_days",
+          "type": "integer",
+          "unit": "days"
+        },
+        {
+          "field": "damaged_inventory_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "deposit_revenue_available",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "weekly sales report",
+        "inventory aging",
+        "purchase orders",
+        "merchant statements",
+        "bank statements",
+        "lease",
+        "insurance documents"
+      ],
+      "response_levers": [
+        "require special-order deposits",
+        "negotiate inventory timing",
+        "reduce owner distributions",
+        "use reserves",
+        "protect online sales",
+        "model a deliberate working-capital draw"
+      ]
+    },
+    {
+      "profile_id": "auto_repair_mobile_service",
+      "label": "Repair Shops and Mobile Service Operators",
+      "examples": [
+        "auto repair",
+        "fleet repair",
+        "appliance repair",
+        "mobile detailing",
+        "roadside service"
+      ],
+      "primary_cash_timing_risks": [
+        "lift or diagnostic equipment failure",
+        "service vehicle failure",
+        "parts delay",
+        "fleet receivable delay",
+        "technician absence",
+        "rework",
+        "customer authorization delay"
+      ],
+      "critical_assets": [
+        "lifts",
+        "diagnostic systems",
+        "service vehicles",
+        "compressors",
+        "specialty tools"
+      ],
+      "recommended_scenarios": [
+        "critical lift failure",
+        "service vehicle breakdown",
+        "parts order delayed",
+        "fleet receivable delayed",
+        "technician unavailable",
+        "stacked equipment failure and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "revenue_per_bay_day",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "affected_bays",
+          "type": "integer",
+          "unit": "count"
+        },
+        {
+          "field": "downtime_days",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "repair_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "outsourcing_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "revenue_protected_by_outsourcing",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "repair estimate",
+        "downtime log",
+        "fleet AR aging",
+        "parts invoices",
+        "payroll schedule",
+        "insurance documents"
+      ],
+      "response_levers": [
+        "rent or outsource capacity",
+        "collect fleet receivables",
+        "negotiate repair deposit",
+        "use reserves",
+        "prioritize high-contribution work",
+        "reschedule lower-priority jobs"
+      ]
+    },
+    {
+      "profile_id": "agencies_professional_services",
+      "label": "Agencies and Professional Services",
+      "examples": [
+        "marketing agency",
+        "consulting",
+        "IT services",
+        "design studio",
+        "bookkeeping",
+        "staffing"
+      ],
+      "primary_cash_timing_risks": [
+        "client concentration",
+        "retainer cancellation",
+        "scope creep",
+        "delayed invoices",
+        "payroll before collection",
+        "contractor commitments",
+        "software cost concentration",
+        "founder sales slowdown"
+      ],
+      "critical_assets": [
+        "client relationships",
+        "billing systems",
+        "cloud tools",
+        "key staff",
+        "data access"
+      ],
+      "recommended_scenarios": [
+        "largest client pays four weeks late",
+        "retainer cancellation",
+        "20% pipeline decline",
+        "unexpected contractor expense",
+        "founder unavailable",
+        "stacked late receivable and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "largest_client_revenue_share",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "retainer_amount_at_risk",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "receivable_delay_weeks",
+          "type": "integer",
+          "unit": "weeks"
+        },
+        {
+          "field": "payroll_per_cycle",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "contractor_commitments",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "recoverable_backlog",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "client concentration report",
+        "AR aging",
+        "contracts",
+        "payroll schedule",
+        "contractor commitments",
+        "pipeline report"
+      ],
+      "response_levers": [
+        "accelerate invoicing",
+        "require retainers or deposits",
+        "resolve invoice disputes",
+        "reduce owner distributions",
+        "pause discretionary software",
+        "sequence contractor work"
+      ]
+    },
+    {
+      "profile_id": "salons_personal_services",
+      "label": "Salons and Personal Services",
+      "examples": [
+        "salon",
+        "barbershop",
+        "spa",
+        "nail studio",
+        "personal training",
+        "wellness studio"
+      ],
+      "primary_cash_timing_risks": [
+        "appointment cancellations",
+        "weather closure",
+        "key-worker absence",
+        "equipment failure",
+        "rent",
+        "product inventory",
+        "refunds",
+        "seasonal demand"
+      ],
+      "critical_assets": [
+        "booking system",
+        "treatment equipment",
+        "HVAC",
+        "laundry",
+        "point-of-sale"
+      ],
+      "recommended_scenarios": [
+        "30% cancellation week",
+        "three-day closure",
+        "key provider unavailable",
+        "HVAC failure",
+        "merchant payout delay",
+        "stacked cancellations and rent week"
+      ],
+      "prompt_variables": [
+        {
+          "field": "average_revenue_per_appointment",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "appointments_per_week",
+          "type": "integer",
+          "unit": "count"
+        },
+        {
+          "field": "cancellation_rate",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "rebooking_rate",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "provider_capacity_loss",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "deposit_policy_effect",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "booking report",
+        "cancellation log",
+        "payroll or contractor schedule",
+        "merchant statements",
+        "lease",
+        "equipment estimate"
+      ],
+      "response_levers": [
+        "rebook appointments",
+        "introduce approved deposits",
+        "fill cancellations",
+        "reduce owner draws",
+        "use alternate providers",
+        "pause noncritical purchases"
+      ]
+    },
+    {
+      "profile_id": "trucking_delivery",
+      "label": "Trucking, Delivery, and Route Businesses",
+      "examples": [
+        "trucking",
+        "courier",
+        "last-mile delivery",
+        "moving company",
+        "route service"
+      ],
+      "primary_cash_timing_risks": [
+        "vehicle failure",
+        "fuel spike",
+        "load cancellation",
+        "broker payment delay",
+        "insurance payment",
+        "maintenance",
+        "driver shortage",
+        "weather closure"
+      ],
+      "critical_assets": [
+        "trucks",
+        "trailers",
+        "routing systems",
+        "fuel access",
+        "licenses and permits"
+      ],
+      "recommended_scenarios": [
+        "truck down for seven days",
+        "fuel cost increase",
+        "major invoice delayed",
+        "load cancellation",
+        "insurance deductible",
+        "stacked repair and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "revenue_per_truck_day",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "downtime_days",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "rental_truck_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "fuel_cost_change",
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "field": "broker_receivable_delay",
+          "type": "integer",
+          "unit": "days"
+        },
+        {
+          "field": "repair_deposit",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "repair estimate",
+        "load history",
+        "AR aging",
+        "fuel report",
+        "insurance documents",
+        "payroll schedule"
+      ],
+      "response_levers": [
+        "rent a unit",
+        "subcontract a route",
+        "accelerate receivables",
+        "negotiate repair timing",
+        "use reserves",
+        "prioritize higher-contribution routes"
+      ]
+    },
+    {
+      "profile_id": "childcare_education",
+      "label": "Childcare and Local Education Services",
+      "examples": [
+        "daycare",
+        "preschool",
+        "tutoring center",
+        "music school",
+        "training studio"
+      ],
+      "primary_cash_timing_risks": [
+        "closure",
+        "enrollment decline",
+        "staffing minimums",
+        "refunds or credits",
+        "facility repair",
+        "payroll concentration",
+        "licensing restrictions",
+        "seasonality"
+      ],
+      "critical_assets": [
+        "facility",
+        "HVAC",
+        "safety systems",
+        "transport vehicles",
+        "learning technology"
+      ],
+      "recommended_scenarios": [
+        "five-day closure",
+        "10% enrollment loss",
+        "HVAC repair",
+        "staffing disruption",
+        "refund week",
+        "stacked closure and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "weekly_tuition_collections",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "closure_days",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "refunds_or_credits",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "minimum_staffing_payroll",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "facility_repair_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "enrollment_loss_rate",
+          "type": "number",
+          "unit": "percent"
+        }
+      ],
+      "documents": [
+        "enrollment report",
+        "tuition schedule",
+        "payroll register",
+        "refund policy",
+        "facility estimate",
+        "insurance documents"
+      ],
+      "response_levers": [
+        "communicate credits clearly",
+        "preserve enrollment",
+        "use reserves",
+        "negotiate repair timing",
+        "delay noncritical purchases",
+        "prepare recovery documentation"
+      ]
+    },
+    {
+      "profile_id": "property_services",
+      "label": "Property and Facility Services",
+      "examples": [
+        "cleaning",
+        "pest control",
+        "security",
+        "pool service",
+        "property maintenance"
+      ],
+      "primary_cash_timing_risks": [
+        "route interruption",
+        "vehicle failure",
+        "contract loss",
+        "weather",
+        "chemical or supply costs",
+        "payroll before collection",
+        "equipment failure",
+        "customer concentration"
+      ],
+      "critical_assets": [
+        "service vehicles",
+        "route software",
+        "specialty equipment",
+        "inventory"
+      ],
+      "recommended_scenarios": [
+        "route vehicle failure",
+        "largest contract delayed",
+        "five weather days",
+        "supply price increase",
+        "equipment replacement",
+        "stacked route interruption and payroll"
+      ],
+      "prompt_variables": [
+        {
+          "field": "revenue_per_route_day",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "route_days_lost",
+          "type": "number",
+          "unit": "days"
+        },
+        {
+          "field": "contract_revenue_at_risk",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "vehicle_repair_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "outsourced_route_cost",
+          "type": "number",
+          "unit": "currency"
+        },
+        {
+          "field": "revenue_protected",
+          "type": "number",
+          "unit": "currency"
+        }
+      ],
+      "documents": [
+        "route schedule",
+        "customer contracts",
+        "AR aging",
+        "vehicle estimate",
+        "payroll schedule",
+        "supplier invoices"
+      ],
+      "response_levers": [
+        "outsource selected routes",
+        "accelerate contract billing",
+        "rent equipment",
+        "negotiate supplier timing",
+        "reduce owner distributions",
+        "use reserves"
+      ]
+    }
+  ],
+  "profile_selection_rules": [
+    "Select the closest operating model, not merely the business label.",
+    "A business may use multiple profiles when it has distinct operating units.",
+    "Do not apply illustrative defaults when the user provides actual values.",
+    "Label every default as an assumption.",
+    "Do not use profiles as underwriting or eligibility criteria."
+  ]
+}

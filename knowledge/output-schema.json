@@ -1,0 +1,828 @@
+{
+  "schema_name": "cash_flow_stress_test_output",
+  "schema_version": "1.0.0",
+  "product": "Cash Flow Stress-Test Copilot",
+  "description": "Required structure for baseline reports, scenario comparisons, trigger plans, checklists, lender or advisor summaries, and export payloads.",
+  "currency_default": "USD",
+  "forecast_horizon_weeks": 13,
+  "status_enums": {
+    "confidence": [
+      "confirmed",
+      "estimated",
+      "unknown"
+    ],
+    "weekly_zone": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "document_status": [
+      "available",
+      "missing",
+      "outdated",
+      "not_applicable",
+      "needs_review"
+    ],
+    "action_confirmation": [
+      "not_required",
+      "required",
+      "confirmed",
+      "declined"
+    ],
+    "data_source_type": [
+      "user_input",
+      "uploaded_file",
+      "connected_source",
+      "assumption",
+      "calculation"
+    ]
+  },
+  "required_sections": [
+    "metadata",
+    "business_profile",
+    "data_quality",
+    "baseline",
+    "scenarios",
+    "comparison_table",
+    "seven_key_numbers",
+    "response_levers",
+    "trigger_plan",
+    "document_readiness",
+    "assumptions",
+    "missing_information",
+    "disclaimer"
+  ],
+  "metadata": {
+    "type": "object",
+    "required": [
+      "report_id",
+      "generated_at",
+      "product",
+      "schema_version",
+      "currency"
+    ],
+    "properties": {
+      "report_id": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "product": {
+        "type": "string",
+        "const": "Cash Flow Stress-Test Copilot"
+      },
+      "schema_version": {
+        "type": "string",
+        "const": "1.0.0"
+      },
+      "currency": {
+        "type": "string",
+        "default": "USD"
+      },
+      "forecast_start_date": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      },
+      "forecast_end_date": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      },
+      "source_files": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "output_format": {
+        "type": "string",
+        "enum": [
+          "markdown",
+          "json",
+          "csv",
+          "xlsx",
+          "pdf",
+          "notion_page",
+          "google_sheet"
+        ]
+      }
+    }
+  },
+  "business_profile": {
+    "type": "object",
+    "required": [
+      "business_name",
+      "business_type",
+      "current_available_cash",
+      "protected_minimum_cash"
+    ],
+    "properties": {
+      "business_name": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "business_type": {
+        "type": "string"
+      },
+      "location": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "current_available_cash": {
+        "type": "number"
+      },
+      "protected_minimum_cash": {
+        "type": "number"
+      },
+      "green_safety_buffer": {
+        "type": "number",
+        "default": 0
+      },
+      "available_reserve_cash": {
+        "type": "number",
+        "default": 0
+      },
+      "available_credit": {
+        "type": "number",
+        "default": 0,
+        "note": "Not counted as cash unless an intentional draw is modeled."
+      },
+      "payroll_schedule": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "week",
+            "amount"
+          ],
+          "properties": {
+            "week": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 13
+            },
+            "amount": {
+              "type": "number",
+              "minimum": 0
+            },
+            "due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        }
+      }
+    }
+  },
+  "data_quality": {
+    "type": "object",
+    "required": [
+      "status",
+      "reconciled",
+      "warnings"
+    ],
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": [
+          "complete",
+          "usable_with_assumptions",
+          "incomplete",
+          "blocked"
+        ]
+      },
+      "reconciled": {
+        "type": "boolean"
+      },
+      "source_summary": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "source_type": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": "string"
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "warnings": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "redaction_warnings": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "weekly_record": {
+    "type": "object",
+    "required": [
+      "week",
+      "beginning_cash",
+      "total_cash_inflows",
+      "total_cash_outflows",
+      "ending_cash",
+      "protected_minimum_cash",
+      "variance_to_protected_minimum",
+      "zone"
+    ],
+    "properties": {
+      "week": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 13
+      },
+      "week_start_date": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "format": "date"
+      },
+      "beginning_cash": {
+        "type": "number"
+      },
+      "cash_inflows": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "total_cash_inflows": {
+        "type": "number"
+      },
+      "cash_outflows": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "total_cash_outflows": {
+        "type": "number"
+      },
+      "ending_cash": {
+        "type": "number"
+      },
+      "protected_minimum_cash": {
+        "type": "number"
+      },
+      "variance_to_protected_minimum": {
+        "type": "number"
+      },
+      "zone": {
+        "type": "string",
+        "enum": [
+          "green",
+          "yellow",
+          "red"
+        ]
+      },
+      "critical_obligation_risk": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "scenario_result": {
+    "type": "object",
+    "required": [
+      "scenario_id",
+      "scenario_name",
+      "scenario_type",
+      "weekly_results",
+      "metrics",
+      "assumptions"
+    ],
+    "properties": {
+      "scenario_id": {
+        "type": "string"
+      },
+      "scenario_name": {
+        "type": "string"
+      },
+      "scenario_type": {
+        "type": "string",
+        "enum": [
+          "baseline",
+          "slow_week",
+          "equipment_failure",
+          "weather_closure",
+          "delayed_receivable",
+          "stacked_shock",
+          "response_lever",
+          "custom"
+        ]
+      },
+      "description": {
+        "type": "string"
+      },
+      "weekly_adjustments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "week",
+            "line_item",
+            "adjustment_type",
+            "amount"
+          ],
+          "properties": {
+            "week": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 13
+            },
+            "line_item": {
+              "type": "string"
+            },
+            "adjustment_type": {
+              "type": "string",
+              "enum": [
+                "add_inflow",
+                "remove_inflow",
+                "add_outflow",
+                "remove_outflow",
+                "move_inflow",
+                "move_outflow"
+              ]
+            },
+            "amount": {
+              "type": "number"
+            },
+            "source_scenario": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "weekly_results": {
+        "type": "array",
+        "minItems": 13,
+        "maxItems": 13,
+        "items": {
+          "$ref": "#/weekly_record"
+        }
+      },
+      "metrics": {
+        "type": "object",
+        "required": [
+          "lowest_projected_cash",
+          "week_of_lowest_cash",
+          "first_week_below_protected_minimum",
+          "first_negative_cash_week",
+          "protected_minimum_runway_weeks",
+          "positive_cash_runway_weeks",
+          "payroll_coverage_cycles",
+          "estimated_funding_gap",
+          "recovery_week"
+        ],
+        "properties": {
+          "lowest_projected_cash": {
+            "type": "number"
+          },
+          "week_of_lowest_cash": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 13
+          },
+          "first_week_below_protected_minimum": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "first_negative_cash_week": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "protected_minimum_runway_weeks": {
+            "type": "number",
+            "minimum": 0
+          },
+          "positive_cash_runway_weeks": {
+            "type": "number",
+            "minimum": 0
+          },
+          "payroll_coverage_cycles": {
+            "type": "number",
+            "minimum": 0
+          },
+          "first_vulnerable_payroll_week": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "estimated_funding_gap": {
+            "type": "number",
+            "minimum": 0
+          },
+          "recovery_week": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "primary_cash_pressure_driver": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "best_response_lever": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "assumptions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "missing_information": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "confidence": {
+        "type": "string",
+        "enum": [
+          "confirmed",
+          "estimated",
+          "unknown"
+        ]
+      }
+    }
+  },
+  "baseline": {
+    "$ref": "#/scenario_result"
+  },
+  "scenarios": {
+    "type": "array",
+    "items": {
+      "$ref": "#/scenario_result"
+    }
+  },
+  "comparison_table": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": [
+        "scenario_id",
+        "scenario_name"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string"
+        },
+        "scenario_name": {
+          "type": "string"
+        },
+        "lowest_projected_cash": {
+          "type": "number"
+        },
+        "week_of_lowest_cash": {
+          "type": "integer"
+        },
+        "first_week_below_protected_minimum": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "first_negative_cash_week": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "protected_minimum_runway_weeks": {
+          "type": "number"
+        },
+        "positive_cash_runway_weeks": {
+          "type": "number"
+        },
+        "payroll_coverage_cycles": {
+          "type": "number"
+        },
+        "estimated_funding_gap": {
+          "type": "number"
+        },
+        "recovery_week": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "seven_key_numbers": {
+    "type": "object",
+    "required": [
+      "minimum_cash_balance",
+      "cash_shortfall_week",
+      "protected_minimum_runway",
+      "positive_cash_runway",
+      "payroll_coverage",
+      "funding_gap",
+      "recovery_week",
+      "best_response_lever"
+    ],
+    "properties": {
+      "minimum_cash_balance": {
+        "type": "number"
+      },
+      "cash_shortfall_week": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "protected_minimum_runway": {
+        "type": "number"
+      },
+      "positive_cash_runway": {
+        "type": "number"
+      },
+      "payroll_coverage": {
+        "type": "number"
+      },
+      "funding_gap": {
+        "type": "number"
+      },
+      "recovery_week": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "best_response_lever": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    }
+  },
+  "response_levers": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": [
+        "lever_id",
+        "lever_name",
+        "modeled_effect",
+        "new_lowest_cash",
+        "gap_reduction"
+      ],
+      "properties": {
+        "lever_id": {
+          "type": "string"
+        },
+        "lever_name": {
+          "type": "string"
+        },
+        "modeled_effect": {
+          "type": "string"
+        },
+        "new_lowest_cash": {
+          "type": "number"
+        },
+        "gap_reduction": {
+          "type": "number"
+        },
+        "trade_offs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires_external_action": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "trigger_plan": {
+    "type": "object",
+    "properties": {
+      "current_zone": {
+        "type": "string",
+        "enum": [
+          "green",
+          "yellow",
+          "red"
+        ]
+      },
+      "green_actions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "yellow_triggers": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "yellow_actions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "red_triggers": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "red_actions": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "owners": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "deadlines": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "document_readiness": {
+    "type": "object",
+    "properties": {
+      "score": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 14
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "major_gaps",
+          "partial_packet",
+          "conversation_ready",
+          "strongly_organized"
+        ]
+      },
+      "documents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "document_name": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "period": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "action_needed": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "assumptions": {
+    "type": "array",
+    "items": {
+      "type": "string"
+    }
+  },
+  "missing_information": {
+    "type": "array",
+    "items": {
+      "type": "string"
+    }
+  },
+  "action_log": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": [
+        "action_name",
+        "confirmation_status"
+      ],
+      "properties": {
+        "action_name": {
+          "type": "string"
+        },
+        "destination": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confirmation_status": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "required",
+            "confirmed",
+            "declined"
+          ]
+        },
+        "executed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "result": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "disclaimer": {
+    "type": "string",
+    "const": "This stress test is a planning tool based on user-provided information and stated assumptions. It does not guarantee funding, eligibility, rates, terms, insurance reimbursement, approval, or financial performance and does not replace professional accounting, tax, legal, lending, insurance, or underwriting judgment."
+  },
+  "export_file_names": {
+    "markdown_report": "cash-flow-stress-test-report-[business-name]-[YYYY-MM-DD].md",
+    "csv_weekly_results": "cash-flow-stress-test-weekly-results-[business-name]-[YYYY-MM-DD].csv",
+    "json_report": "cash-flow-stress-test-report-[business-name]-[YYYY-MM-DD].json",
+    "lender_advisor_summary": "cash-flow-stress-test-summary-[business-name]-[YYYY-MM-DD].md",
+    "document_checklist": "funding-document-checklist-[business-name]-[YYYY-MM-DD].md"
+  }
+}

@@ -1,0 +1,28 @@
+﻿section,line_item,classification,unit,week_1,week_2,week_3,week_4,week_5,week_6,week_7,week_8,week_9,week_10,week_11,week_12,week_13,notes
+Cash Position,Beginning Cash,calculated_except_week_1,currency,0,=E24,=F24,=G24,=H24,=I24,=J24,=K24,=L24,=M24,=N24,=O24,=P24,Enter current available business cash in Week 1. Later weeks chain from prior ending cash.
+Cash Inflows,Cash Sales / Deposits,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Enter cash expected to clear in each week.
+Cash Inflows,Accounts Receivable Collected,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Use expected collection week; move delayed receivables rather than duplicating them.
+Cash Inflows,Other Operating Inflows,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Exclude internal transfers unless they change cash intentionally available for operations.
+Cash Inflows,Reserve Transfer,optional_input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Do not include reserve cash here if already included in Week 1 beginning cash.
+Cash Inflows,Credit Draw,optional_input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Available credit is not cash until a draw is intentionally modeled.
+Cash Inflows,Insurance Proceeds Received,optional_input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Enter only in the week proceeds are reasonably expected to be received; do not assume claim approval.
+Cash Inflows,Total Cash Inflows,formula,currency,=SUM(E3:E8),=SUM(F3:F8),=SUM(G3:G8),=SUM(H3:H8),=SUM(I3:I8),=SUM(J3:J8),=SUM(K3:K8),=SUM(L3:L8),=SUM(M3:M8),=SUM(N3:N8),=SUM(O3:O8),=SUM(P3:P8),=SUM(Q3:Q8),Formula: sum of inflow rows.
+Cash Outflows,Payroll,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Enter actual payroll schedule by week.
+Cash Outflows,Rent / Occupancy,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Suppliers / Inventory,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Debt / Equipment Payments,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Taxes,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Insurance Expense,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Utilities,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Software / Subscriptions,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Marketing / Advertising,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Owner Distributions,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Repairs / Replacement,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Use for selected repair or replacement path; do not automatically include every alternative.
+Cash Outflows,Refunds / Customer Credits Paid,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Do not also reduce revenue for the same refunded amount unless timing requires a separate treatment.
+Cash Outflows,Other Cash Outflows,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,
+Cash Outflows,Total Cash Outflows,formula,currency,=SUM(E10:E22),=SUM(F10:F22),=SUM(G10:G22),=SUM(H10:H22),=SUM(I10:I22),=SUM(J10:J22),=SUM(K10:K22),=SUM(L10:L22),=SUM(M10:M22),=SUM(N10:N22),=SUM(O10:O22),=SUM(P10:P22),=SUM(Q10:Q22),Formula: sum of outflow rows.
+Cash Position,Ending Cash,formula,currency,=E2+E9-E23,=F2+F9-F23,=G2+G9-G23,=H2+H9-H23,=I2+I9-I23,=J2+J9-J23,=K2+K9-K23,=L2+L9-L23,=M2+M9-M23,=N2+N9-N23,=O2+O9-O23,=P2+P9-P23,=Q2+Q9-Q23,Ending Cash = Beginning Cash + Total Inflows - Total Outflows.
+Thresholds,Protected Minimum Cash,input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Enter the minimum cash level the owner wants to protect.
+Thresholds,Green Safety Buffer,optional_input,currency,0,0,0,0,0,0,0,0,0,0,0,0,0,Optional amount maintained above the protected minimum.
+Cash Position,Variance to Protected Minimum,formula,currency,=E24-E25,=F24-F25,=G24-G25,=H24-H25,=I24-I25,=J24-J25,=K24-K25,=L24-L25,=M24-M25,=N24-N25,=O24-O25,=P24-P25,=Q24-Q25,Positive = above protected minimum; negative = below.
+Cash Position,Zone,formula,text,"=IF(E24<0,""RED"",IF(E24<(E25+E26),""YELLOW"",""GREEN""))","=IF(F24<0,""RED"",IF(F24<(F25+F26),""YELLOW"",""GREEN""))","=IF(G24<0,""RED"",IF(G24<(G25+G26),""YELLOW"",""GREEN""))","=IF(H24<0,""RED"",IF(H24<(H25+H26),""YELLOW"",""GREEN""))","=IF(I24<0,""RED"",IF(I24<(I25+I26),""YELLOW"",""GREEN""))","=IF(J24<0,""RED"",IF(J24<(J25+J26),""YELLOW"",""GREEN""))","=IF(K24<0,""RED"",IF(K24<(K25+K26),""YELLOW"",""GREEN""))","=IF(L24<0,""RED"",IF(L24<(L25+L26),""YELLOW"",""GREEN""))","=IF(M24<0,""RED"",IF(M24<(M25+M26),""YELLOW"",""GREEN""))","=IF(N24<0,""RED"",IF(N24<(N25+N26),""YELLOW"",""GREEN""))","=IF(O24<0,""RED"",IF(O24<(O25+O26),""YELLOW"",""GREEN""))","=IF(P24<0,""RED"",IF(P24<(P25+P26),""YELLOW"",""GREEN""))","=IF(Q24<0,""RED"",IF(Q24<(Q25+Q26),""YELLOW"",""GREEN""))",Red also applies when a critical obligation cannot be paid even if ending cash is nonnegative.
