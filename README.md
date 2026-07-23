@@ -2,8 +2,10 @@
 
 ---
 
-## Sites 
+## Sites & Resources 
 
+- URL: https://cashflow-stress-test.vercel.app/
 - ChatGPT: https://chatgpt.com/g/g-6a60f76ed8cc819183ea4bf9abb2333d-cash-flow-stress-test-copilot
+- Vercel: https://vercel.com/jason-feimsters-projects/cashflow-stress-test
 - GitHub: https://github.com/JFeimster/cashflow-stress-test/ 
 - Notion: https://feimster.notion.site/cash-flow-stress-test-copilot
